@@ -41,29 +41,46 @@
 }
       </style>
    </head>
+
    <body onload= Formdata.addForm()>
+	   
       <h1>Add new input lines to HTML entry form</h1>
+	   
       <p>Enable users to add a row of fields to an HTML input form. In this code, after the HTML loads, addForm() is called. Clicking the Add Line button calls a function, addLine(), which calls addField() once for each field in the new input line. The elements, label and input, are formatted using CSS. </p>
+	   
       <button type="button" onclick="Formdata.addLine();">Add Line</button>
       <br />
       <br />
+	   
       <div id="div1">
       </div>
       <h1>Generate array of objects</h1>
+	   
       <p>Loop through the HTML form lines and store the data into an array of objects, where each property of an object contains the data in the input field of the HTML entry form. </p>
+	   
       <button type="button" onclick="Person.genObjectArray();">Generate and Display Array of Objects</button>
+	   
       <br />
+	   
       <div id="div2">
       </div>
+	   
       <h1>Display table containing data from array of objects</h1>
+	   
       <p>Loop through the HTML form lines and store the data into an array of objects, where each property of an object contains the data in the input field of the HTML entry form. </p>
+	   
       <button type="button" onclick="Table.genTable();">Generate and Display Table</button>
+	   
       <br />
       <br />
+	   
       <div id="div3">
       </div>
+	   
       <script>
+	      
          // GLOBAL VARIABLES
+	      
          var currentLine = 0;
          var inputWidth  = 10;
          var objArray    = [];
@@ -75,22 +92,25 @@
            static addForm() {
          	// precondition: program must contain a <div id="div1"></div> becasue it appends to that div1
          	// postcondition: outputs a field of data in a form, firstname, lastname, month of birth, day of birth, year of birth and a select drop down for country of USA or china
-             //no inputs required to run the method
+             	//no inputs required to run the method
          	var newelement = document.createElement("form");
          	newelement.setAttribute("id","form1");
          	var div1 = document.getElementById("div1");
          	div1.appendChild(newelement);
+		   
          	// create a new fieldset element, and append to form1
          	var newelement = document.createElement("fieldset");
          	newelement.setAttribute("id","fieldset1");
          	var form1 = document.getElementById("form1");
          	form1.appendChild(newelement);
+		   
          	// create a new legend element, and append to fieldset1
          	var newelement = document.createElement("legend");
          	var textnode = document.createTextNode("People ");
          	newelement.appendChild(textnode);
          	var fieldset1 = document.getElementById("fieldset1");
          	fieldset1.appendChild(newelement);
+		   
          	// create a new label element, and append to fieldset1
          	var newelement = document.createElement("label");
          	newelement.setAttribute("for","fname"+currentLine);
@@ -98,6 +118,7 @@
          	newelement.appendChild(textnode);
          	var fieldset1 = document.getElementById("fieldset1");
          	fieldset1.appendChild(newelement);
+		   
          	// create a new input element, and append to fieldset1
          	var newelement = document.createElement("input");
          	newelement.setAttribute("name","fname"+currentLine);
@@ -108,16 +129,19 @@
          	if (currentLine==0) newelement.setAttribute("autofocus","autofocus");
          	var fieldset1 = document.getElementById("fieldset1");
          	fieldset1.appendChild(newelement);
+		   
          	// add more fields 
          	this.addField("fieldset1", "lname", "Surname", "text", "", inputWidth);
          	this.addField("fieldset1", "daynumber", "Solar birth day", "number", "", inputWidth);
-           this.addField("fieldset1", "monthnumber", "Solar birth month", "number", "", inputWidth);
-           this.addField("fieldset1", "yearnumber", "Solar birth year", "number", "", inputWidth);
+        	this.addField("fieldset1", "monthnumber", "Solar birth month", "number", "", inputWidth);
+         	this.addField("fieldset1", "yearnumber", "Solar birth year", "number", "", inputWidth);
          	this.addcountry();
+		   
          	// add line break 
          	var newelement = document.createElement("br");
          	var fieldset1 = document.getElementById("fieldset1");
          	fieldset1.appendChild(newelement);
+		   
          	// increment line counter
          	currentLine++;
          }
@@ -151,6 +175,7 @@
          	n.appendChild(t);
          	var f = document.getElementById(formId);
          	f.appendChild(n);
+		 
          	// create a new input element, and append to form
          	var n = document.createElement("input");
          	n.setAttribute("name",namePrefix+currentLine);
@@ -164,6 +189,7 @@
          
           static addcountry() {
            var array = ["USA","China"]; //array for select list
+		  
           //creating label and appending
            var n = document.createElement("label");
          	n.setAttribute("for","country"+currentLine);
@@ -171,13 +197,15 @@
          	n.appendChild(t);
          	var f = document.getElementById("fieldset1");
          	f.appendChild(n);
+		  
           //creating select element and id, and name and appending
            var n = document.createElement("select");
            n.setAttribute("name","country"+currentLine);
            n.setAttribute("id", "country"+currentLine);
            n.setAttribute("type","text");
            var f = document.getElementById("fieldset1");
-         	f.appendChild(n);
+           f.appendChild(n);
+		  
          //appending array for select option to element
           for (var i = 0; i < array.length; i++) {
              var option = document.createElement("option");
