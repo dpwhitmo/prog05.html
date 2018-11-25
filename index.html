@@ -13,7 +13,9 @@
          input[type="number"] {
          width:50px;
          margin-right: 10px;
-         }
+      {
+		background-color: Grey;
+		}         }
       </style>
    </head>
    <body onload= Formdata.addForm()>
@@ -78,16 +80,16 @@
          	newelement.setAttribute("name","fname"+currentLine);
          	newelement.setAttribute("id","fname"+currentLine);
          	newelement.setAttribute("type","text");
-         	newelement.setAttribute("placeholder","Jane");
+         	newelement.setAttribute("placeholder","");
          	newelement.setAttribute("size",10);
          	if (currentLine==0) newelement.setAttribute("autofocus","autofocus");
          	var fieldset1 = document.getElementById("fieldset1");
          	fieldset1.appendChild(newelement);
          	// add more fields 
-         	this.addField("fieldset1", "lname", "Last", "text", "Doe", inputWidth);
-         	this.addField("fieldset1", "daynumber", "Solar birth day", "number", "00", inputWidth);
-           this.addField("fieldset1", "monthnumber", "Solar birth month", "number", "00", inputWidth);
-           this.addField("fieldset1", "yearnumber", "Solar birth year", "number", "0000", inputWidth);
+         	this.addField("fieldset1", "lname", "Last", "text", "", inputWidth);
+         	this.addField("fieldset1", "daynumber", "Solar birth day", "number", "", inputWidth);
+           this.addField("fieldset1", "monthnumber", "Solar birth month", "number", "", inputWidth);
+           this.addField("fieldset1", "yearnumber", "Solar birth year", "number", "", inputWidth);
          	this.addcountry();
          	// add line break 
          	var newelement = document.createElement("br");
