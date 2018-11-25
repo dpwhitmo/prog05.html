@@ -94,7 +94,7 @@
          	// create a new label element, and append to fieldset1
          	var newelement = document.createElement("label");
          	newelement.setAttribute("for","fname"+currentLine);
-         	var textnode = document.createTextNode("First");
+         	var textnode = document.createTextNode("Given Name");
          	newelement.appendChild(textnode);
          	var fieldset1 = document.getElementById("fieldset1");
          	fieldset1.appendChild(newelement);
@@ -109,7 +109,7 @@
          	var fieldset1 = document.getElementById("fieldset1");
          	fieldset1.appendChild(newelement);
          	// add more fields 
-         	this.addField("fieldset1", "lname", "Last", "text", "", inputWidth);
+         	this.addField("fieldset1", "lname", "Surname", "text", "", inputWidth);
          	this.addField("fieldset1", "daynumber", "Solar birth day", "number", "", inputWidth);
            this.addField("fieldset1", "monthnumber", "Solar birth month", "number", "", inputWidth);
            this.addField("fieldset1", "yearnumber", "Solar birth year", "number", "", inputWidth);
