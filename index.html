@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+   <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <style>
+         label {
+         text-align: center;
+         padding-right: 15px;
+         margin-left: 10px;
+         }
+         input[type="number"] {
+         width:50px;
+         margin-right: 10px;
+         }
+      </style>
+   </head>
+   <body onload= Formdata.addForm()>
+      <h1>Add new input lines to HTML entry form</h1>
+      <p>Enable users to add a row of fields to an HTML input form. In this code, after the HTML loads, addForm() is called. Clicking the Add Line button calls a function, addLine(), which calls addField() once for each field in the new input line. The elements, label and input, are formatted using CSS. </p>
+      <button type="button" onclick="Formdata.addLine();">Add Line</button>
+      <br />
+      <br />
+      <div id="div1">
+      </div>
+      <h1>Generate array of objects</h1>
+      <p>Loop through the HTML form lines and store the data into an array of objects, where each property of an object contains the data in the input field of the HTML entry form. </p>
+      <button type="button" onclick="Person.genObjectArray();">Generate and Display Array of Objects</button>
+      <br />
+      <div id="div2">
+      </div>
+      <h1>Display table containing data from array of objects</h1>
+      <p>Loop through the HTML form lines and store the data into an array of objects, where each property of an object contains the data in the input field of the HTML entry form. </p>
+      <button type="button" onclick="Table.genTable();">Generate and Display Table</button>
+      <br />
+      <br />
+      <div id="div3">
+      </div>
+      <script>
+         // GLOBAL VARIABLES
+         var currentLine = 0;
+         var inputWidth  = 10;
+         var objArray    = [];
+         
+          //class used to create the form inputs used to collect the data for the person class       
+         class Formdata{
+           
+           // this static method is used to add a line, in this program it is used on load to add the initial line to the form
+           static addForm() {
+         	// precondition: program must contain a <div id="div1"></div> becasue it appends to that div1
+         	// postcondition: outputs a field of data in a form, firstname, lastname, month of birth, day of birth, year of birth and a select drop down for country of USA or china
+             //no inputs required to run the method
+         	var newelement = document.createElement("form");
+         	newelement.setAttribute("id","form1");
+         	var div1 = document.getElementById("div1");
+         	div1.appendChild(newelement);
+         	// create a new fieldset element, and append to form1
+         	var newelement = document.createElement("fieldset");
+         	newelement.setAttribute("id","fieldset1");
+         	var form1 = document.getElementById("form1");
+         	form1.appendChild(newelement);
+         	// create a new legend element, and append to fieldset1
+         	var newelement = document.createElement("legend");
+         	var textnode = document.createTextNode("People ");
+         	newelement.appendChild(textnode);
+         	var fieldset1 = document.getElementById("fieldset1");
+         	fieldset1.appendChild(newelement);
+         	// create a new label element, and append to fieldset1
+         	var newelement = document.createElement("label");
+         	newelement.setAttribute("for","fname"+currentLine);
+         	var textnode = document.createTextNode("First");
+         	newelement.appendChild(textnode);
+         	var fieldset1 = document.getElementById("fieldset1");
+         	fieldset1.appendChild(newelement);
+         	// create a new input element, and append to fieldset1
+         	var newelement = document.createElement("input");
+         	newelement.setAttribute("name","fname"+currentLine);
+         	newelement.setAttribute("id","fname"+currentLine);
+         	newelement.setAttribute("type","text");
+         	newelement.setAttribute("placeholder","Jane");
+         	newelement.setAttribute("size",10);
+         	if (currentLine==0) newelement.setAttribute("autofocus","autofocus");
+         	var fieldset1 = document.getElementById("fieldset1");
+         	fieldset1.appendChild(newelement);
+         	// add more fields 
+         	this.addField("fieldset1", "lname", "Last", "text", "Doe", inputWidth);
+         	this.addField("fieldset1", "daynumber", "Solar birth day", "number", "00", inputWidth);
+           this.addField("fieldset1", "monthnumber", "Solar birth month", "number", "00", inputWidth);
+           this.addField("fieldset1", "yearnumber", "Solar birth year", "number", "0000", inputWidth);
+         	this.addcountry();
+         	// add line break 
+         	var newelement = document.createElement("br");
+         	var fieldset1 = document.getElementById("fieldset1");
+         	fieldset1.appendChild(newelement);
+         	// increment line counter
+         	currentLine++;
+         }
+           //static method in the form class used to add a new line to the form
+           static addLine () {
+         	// precondition: inputWidth global variable must be set
+         	// precondition: call from addForm() so HTML element with id="fieldset1" exists
+           this.addField("fieldset1", "fname", "First", "text", "", inputWidth);
+         	this.addField("fieldset1", "lname", "Last", "text", "", inputWidth);
+         	this.addField("fieldset1", "daynumber", "Solar birth day", "number", "00", inputWidth);
+           this.addField("fieldset1", "monthnumber", "Solar birth month", "number", "00", inputWidth);
+           this.addField("fieldset1", "yearnumber", "Solar birth year", "number", "0000", inputWidth);
+         	this.addcountry();
+         	var newelement = document.createElement("br");
+         	var fieldset1 = document.getElementById("fieldset1");
+         	fieldset1.appendChild(newelement);
+         	currentLine++;
+         }
+         
+           /* addField()
+          * inserts one label one input element into a row of a form 
+          */
+         static addField(formId, namePrefix, labelText, dataType, placeholder, fieldSize) {
+         	// precondition: currentLine (global variable) must be set
+         	// precondition: objArray[] (global variable) must be declared
+         	// precondition: call from addLine() so HTML element with id=formID exists
+         	// create a new label element, and append to form (or fieldset)
+         	var n = document.createElement("label");
+         	n.setAttribute("for",namePrefix+currentLine);
+         	var t = document.createTextNode(labelText + " " );
+         	n.appendChild(t);
+         	var f = document.getElementById(formId);
+         	f.appendChild(n);
+         	// create a new input element, and append to form
+         	var n = document.createElement("input");
+         	n.setAttribute("name",namePrefix+currentLine);
+         	n.setAttribute("id",namePrefix+currentLine);
+         	n.setAttribute("type",dataType);
+         	n.setAttribute("placeholder",placeholder);
+         	n.setAttribute("size",fieldSize);
+         	var f = document.getElementById(formId);
+         	f.appendChild(n);
+         }
+         
+          static addcountry() {
+           var array = ["USA","China"]; //array for select list
+          //creating label and appending
+           var n = document.createElement("label");
+         	n.setAttribute("for","country"+currentLine);
+         	var t = document.createTextNode("Country");
+         	n.appendChild(t);
+         	var f = document.getElementById("fieldset1");
+         	f.appendChild(n);
+          //creating select element and id, and name and appending
+           var n = document.createElement("select");
+           n.setAttribute("name","country"+currentLine);
+           n.setAttribute("id", "country"+currentLine);
+           n.setAttribute("type","text");
+           var f = document.getElementById("fieldset1");
+         	f.appendChild(n);
+         //appending array for select option to element
+          for (var i = 0; i < array.length; i++) {
+             var option = document.createElement("option");
+             option.setAttribute("value", array[i]);
+             option.text = array[i];
+             n.appendChild(option);
+           }
+         }
+         
+         }        
+         
+          //this class contains all the data that was input into the form class form, firstname, lastname, birthday, country, it supports getting the zodiac sigh, getting local birthday, getting local age       
+          class Person{
+            constructor(i){
+              this.fname = document.getElementById("fname"+i).value;
+              this.lname = document.getElementById("lname"+i).value;
+              this.daynumber = document.getElementById("daynumber"+i).value;
+              this.monthnumber = document.getElementById("monthnumber"+i).value;
+              this.yearnumber = document.getElementById("yearnumber"+i).value;
+              this.country = document.getElementById("country"+i).value;
+              this.countryage = function() {
+                var currentTime = new Date();
+                 var currentyear = currentTime.getFullYear();
+                 var age = this.yearnumber;
+                 if(this.country == 'China')
+                   return ((currentyear-age)+1);
+                 else
+                   return (currentyear-age);
+              }
+            }
+         
+           // static method inside person class used to generate the zodiac for the persons data 
+           //precondition: birthday data and country needs to be input into form data to get the zodiac back
+           // no direct input needed, just the data from the person object
+            zodiac(){
+              if(this.country == 'China'){
+                 var ChineseZodiac = {animals : [ "Rooster", "Boar","Dog",  "Rat", "Tiger","Ox",  "Monkey","Rabbit", "Dragon", "Snake", "Horse", "Sheep"]};
+         		return ChineseZodiac.animals[(this.yearnumber % ChineseZodiac.animals.length)];}
+                   else{
+                     var zodiac =['', 'Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 
+                             'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+                 var last_day =['', 19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
+                 return (this.daynumber > last_day[this.monthnumber]) ? zodiac[this.monthnumber*1 + 1] : zodiac[this.monthnumber];
+                   }
+            }
+         
+          //static class method to generate the array and display it to div2
+          //precondition: program must contain a div2 becasue the array is displayed to that location
+          //              div1 form must have been created for the array to generate and display data
+          //no direct inputs required to run this method
+            static genObjectArray(){
+              for(var i = 0; i < currentLine; i++) {
+         			objArray[i] = new Person(i);
+         		}
+         
+         
+              var divContent = "<ol start='0'>";
+         		objArray.forEach(function(e) {
+         			divContent += '<li>';
+         			divContent += JSON.stringify(e);
+               divContent += '.... countryage() == ' + e.countryage();
+               divContent += '.....countryname() ==' + e.countryname();
+               divContent += '.... zodiac() == ' + e.zodiac();
+               divContent += '.... localbirth() ==' + e.localbirth();
+         			divContent += '</li>';
+         		});
+         		divContent += "</ol>";
+         		document.getElementById("div2").innerHTML = divContent;
+         
+            }                 
+         
+          }
+         //Person prototype edit to allow countryname functionality
+         Person.prototype.countryname = function(){
+           if(this.country == 'China')
+                   return (this.lname+" "+this.fname);
+                 else
+                   return (this.fname+" "+this.lname);
+         }
+                 
+         //object prototype adding local birthday functionality
+         Object.prototype.localbirth = function() {
+           if(this.country == 'China')
+             return(this.yearnumber+"-"+this.monthnumber+"-"+this.daynumber); 
+           else
+             return(this.monthnumber+"-"+this.daynumber+"-"+this.yearnumber);
+         }
+         
+         //table class used to create the table in div3
+         class Table{
+         
+           //precondition: need to have a div3 element in the program because this method appends the table to that div3, it also needs the person class and the person.genobjectarray method in person becasue it is designed to run that method first to make sure it has all the needed data when creating the table
+           static genTable(){
+             var div3 = document.getElementById("div3"); 
+           while(div3.firstChild){
+             div3.removeChild(div3.firstChild);
+           }
+           Person.genObjectArray();
+         
+             var table = document.createElement("table");
+         		table.setAttribute("id", "table1");
+         		table.setAttribute("class", "table table-striped table-bordered");
+         		div3.appendChild(table);
+         
+             var table = document.getElementById("table1");
+         		var row = table.insertRow(0);
+         		var cell1 = row.insertCell(0);      
+                 cell1.setAttribute("id","localname");       
+                 cell1.innerHTML = "Local Name";
+             var cell2 = row.insertCell(1);      
+                 cell2.setAttribute("id","birth");
+                 cell2.innerHTML = "Local Birthday";
+             var cell3 = row.insertCell(2);      
+                 cell3.setAttribute("id","age");
+                 cell3.innerHTML = "Local Age";
+             var cell4 = row.insertCell(3);      
+                 cell4.setAttribute("id","zodiac");
+                 cell4.innerHTML = "Zodiac";
+         
+             for(var i = 0; i < objArray.length; i++) {
+         			row = table.insertRow(i + 1);
+         
+         			var cellname = row.insertCell(0);
+         			cellname.setAttribute("id", "name")
+               cellname.innerHTML = objArray[i].countryname();
+         
+         			var cellbirth  = row.insertCell(1);
+         			cellbirth.setAttribute("id", "birth")
+               cellbirth.innerHTML = objArray[i].localbirth();
+         
+         			var cellage = row.insertCell(2);
+         			cellage.setAttribute("id", "age");
+               cellage.innerHTML = objArray[i].countryage();
+         
+         			var cellzodiac = row.insertCell(3);
+         			cellzodiac.setAttribute("id", "zodiac");
+               cellzodiac.innerHTML = objArray[i].zodiac();
+         		}
+         
+         
+         }
+         }
+         
+         									
+      </script>
+   </body>
+</html>
